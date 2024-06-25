@@ -1,0 +1,8 @@
+diff --git a/node_modules/currency-symbol/index.d.ts b/node_modules/currency-symbol/index.d.ts
+new file mode 100644
+index 0000000..5a91b7d
+--- /dev/null
++++ b/node_modules/currency-symbol/index.d.ts
+@@ -0,0 +1 @@
++declare module 'currency-symbol';
+\ No newline at end of file

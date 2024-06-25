@@ -1,0 +1,141 @@
+import type {} from "react-select/base";
+
+import { HTMLAttributes, LabelHTMLAttributes, ReactNode } from "react";
+
+import { forwardRef, useState } from "react";
+import { twMerge } from "tw-merge";
+import ReactSelect from "react-select";
+
+declare module "react-select/base" {
+  export interface SelectProps<
+    Option,
+    IsMulti extends boolean,
+    Group extends GroupBase<Option>
+  > {
+    name?: string;
+    label?: string;
+    error?: boolean;
+    errorText?: string;
+    infoText?: string;
+    labelProps?: InputLabelProps;
+    errorProps?: InputErrorProps;
+    infoProps?: InputInfoProps;
+  }
+}
+
+export interface InputLabelProps
+  extends Omit<LabelHTMLAttributes<HTMLLabelElement>, "ref"> {}
+
+export interface InputErrorProps
+  extends Omit<HTMLAttributes<HTMLParagraphElement>, "ref"> {}
+
+export interface InputInfoProps
+  extends Omit<HTMLAttributes<HTMLParagraphElement>, "ref"> {}
+
+export const Select = forwardRef<ReactSelect, SelectProps>((props, ref) => {
+  const {
+    name = "",
+    label = "",
+    labelProps = undefined,
+    errorProps = undefined,
+    infoProps = undefined,
+    error = false,
+    errorText = "",
+    infoText = "",
+    ...rest
+  } = props;
+
+  const [value, setValue] = useState<any>(
+    props?.value || props?.defaultValue || ""
+  );
+
+  function preChange(...params: any) {
+    setValue(params[0]);
+    if (props.onChange) {
+      props?.onChange({ target: { name: props?.name, value: params[0] } });
+    }
+  }
+
+  return (
+    <>
+      {label ? (
+        <label
+          htmlFor={props.id}
+          {...labelProps}
+          className={twMerge(
+            `text-light text-sm leading-[16.94px] block mb-[8px] ${
+              labelProps?.className || ""
+            }`
+          )}
+        >
+          {label}
+        </label>
+      ) : (
+        <></>
+      )}
+      <div className={twMerge(`relative px-[2px]`)}>
+        <ReactSelect
+          ref={ref}
+          {...rest}
+          value={value}
+          onChange={preChange}
+          className={twMerge(
+            `[&_input[type="text"]:focus]:!border-0 [&_input[type="text"]:focus]:!ring-0 [&_input[type="text"]:focus]:!outline-0 [&_input[type="text"]:focus]:!shadow-none [&>div]:text-sm [&>div]:rounded [&>div]:leading-[19.94px] [&>div]:font-medium [&>div:placeholder]:text-placeholder [&>div]:border [&>div]:border-border3 ${
+              error
+                ? "[&>div]:border-danger [&>div]:hover:border-primary [&>div]:focus:border-danger [&>div]:focus:ring-danger"
+                : "[&>div]:border-border3 [&>div:hover]:border-primary [&>div:focus-within]:border-primary [&>div:focus-within]:!shadow-none [&>div:focus-within]:ring-1 [&>div:focus-within]:ring-primary [&>div:focus-within]:outline-primary"
+            }
+            } ${rest?.className || ""}`
+          )}
+          components={{
+            Option: (props) => (
+              <button
+                className={`text-light block w-full text-start bg-white py-2 px-2 hover:bg-gray-50 focus-within:bg-gray-50 ${
+                  props.isFocused ? "bg-gray-50" : ""
+                } ${props.isSelected ? "text-primary !bg-primary/30" : ""} ${
+                  props.data
+                } ${
+                  props.isDisabled
+                    ? "cursor-not-allowed bg-gray-100 opacity-50"
+                    : ""
+                }`}
+                onClick={() =>
+                  !props.isDisabled ? setValue(props?.data) : false
+                }
+              >
+                {props.label}
+              </button>
+            ),
+          }}
+        />
+      </div>
+      {!error && infoText ? (
+        <p
+          {...infoProps}
+          className={twMerge(
+            `text-light text-xs leading-[16.94px] mt-[5px] ${
+              infoProps?.className || ""
+            }`
+          )}
+        >
+          {infoText}
+        </p>
+      ) : error && errorText ? (
+        <p
+          {...errorProps}
+          className={twMerge(
+            `text-danger text-xs leading-[16.94px] mt-[5px] ${
+              errorProps?.className || ""
+            }`
+          )}
+        >
+          {errorText}
+        </p>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+});
+
+export default Select;

@@ -1,0 +1,25 @@
+.toast-message {
+  @apply p-4 w-full overflow-hidden flex gap-4 items-center justify-between flex-nowrap text-gray-600 bg-gray-100 text-sm rounded-lg;
+
+  &.success {
+    @apply bg-green-100 shadow-sm text-green-600;
+  }
+  &.error {
+    @apply bg-red-100 shadow-sm text-red-600;
+  }
+  &.info {
+    @apply bg-white shadow-sm text-black/60;
+  }
+
+  .text {
+    @apply w-full font-[450];
+  }
+
+  .icon:last-child {
+    @apply text-lg cursor-pointer max-w-fit min-w-fit;
+  }
+
+  .icon {
+    @apply text-2xl text-inherit max-w-fit min-w-fit;
+  }
+}
