@@ -99,6 +99,7 @@ const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>((props) => {
     padFractionalZeros,
     normalizeZeros,
     mapToRadix,
+    onInput,
     ...restProps
   } = props;
   const { ref, unmaskedValue, setUnmaskedValue } = useIMask(
@@ -115,13 +116,14 @@ const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>((props) => {
       definitions: props?.definitions,
     } as any,
     {
-      onAccept(_, maskRef) {
+      onAccept(value) {
+        console.log(value);
         if (!touched) return;
-        props?.onInput!({
+        onInput!({
           target: {
             name: props?.name,
             id: props?.id,
-            value: maskRef?.unmaskedValue,
+            value: value?.toString()?.replaceAll(",", ""),
           },
         } as any);
       },

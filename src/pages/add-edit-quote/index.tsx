@@ -290,6 +290,7 @@ export default function AddEditQuote() {
     key: string,
     value: string | number
   ) {
+    console.log(key, value);
     setQuote((prev) => ({
       ...prev,
       sections: [...(prev?.sections || [])]?.map((s) => {
@@ -302,9 +303,11 @@ export default function AddEditQuote() {
                   ...d,
                   [key]: value,
                   amount: ["unit"]?.includes(key)
-                    ? d?.rate * parseFloat(value?.toString())
+                    ? parseFloat(d?.rate?.toString()?.replaceAll(",", "")) *
+                      parseFloat(value?.toString()?.replaceAll(",", ""))
                     : ["rate"]?.includes(key)
-                    ? d?.unit * parseFloat(value?.toString())
+                    ? parseFloat(d?.unit?.toString()?.replaceAll(",", "")) *
+                      parseFloat(value?.toString()?.replaceAll(",", ""))
                     : d?.amount,
                 } as any;
               } else {
