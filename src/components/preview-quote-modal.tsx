@@ -88,6 +88,18 @@ export default function PreviewQuoteModal(props: PreviewQuoteModalProps) {
         resetForm();
         navigate("/");
       },
+      onError: (err: any) => {
+        const errors = err?.errors;
+        if (errors) {
+          showErrorMessage(
+            Object.keys(errors).map((e) => errors[e][0]),
+            { timeout: "never" }
+          );
+        } else {
+          showErrorMessage(err?.message || err || "Unknown error occured");
+        }
+        setOpen(false);
+      },
     } as any;
     dispatch(action);
   }

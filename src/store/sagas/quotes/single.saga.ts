@@ -36,6 +36,7 @@ export function* fetchQuoteAsync(action?: any) {
           "Unknown error occured!",
       })
     );
+    action?.payload?.onError!(err?.response?.data);
   }
 }
 

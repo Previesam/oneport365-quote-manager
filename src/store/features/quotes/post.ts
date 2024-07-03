@@ -15,7 +15,8 @@ export interface PostQuoteState {
 export interface PostQuotePayload {
   method: "POST" | "PUT";
   data: Quote;
-  onSuccess: any;
+  onSuccess?: any;
+  onError?: any;
 }
 
 const initialState: PostQuoteState = {

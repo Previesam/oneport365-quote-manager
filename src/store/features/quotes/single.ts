@@ -14,7 +14,8 @@ export interface SingleQuoteState {
 
 export interface SingleQuotePayload {
   id: string;
-  onSuccess: any;
+  onSuccess?: any;
+  onError?: any;
 }
 
 const initialState: SingleQuoteState = {

@@ -42,6 +42,7 @@ export default function QuoteSection(props: { id: string }) {
     addSectionData,
     removeSectionData,
     resetForm,
+    formIsValid,
   } = useAddEditQuote();
   const [sectionCurrency, setSectionCurrency] = useState(
     quote?.sections?.find((i) => i?.id == props.id)
@@ -340,7 +341,12 @@ export default function QuoteSection(props: { id: string }) {
                 Cancel
               </Button>
               <PreviewQuoteModal data={quote} context={true}>
-                <Button variant="filled" color="primary" className="px-[32px]">
+                <Button
+                  variant="filled"
+                  color="primary"
+                  className="px-[32px]"
+                  disabled={!formIsValid}
+                >
                   Save Quote
                 </Button>
               </PreviewQuoteModal>

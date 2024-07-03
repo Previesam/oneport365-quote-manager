@@ -165,10 +165,9 @@ export default function AddEditQuote() {
 
   const dispatch = useDispatch();
 
-  const { quote: fetchedQuote, loading: fetchLoading } = useSelector<
-    any,
-    SingleQuoteState
-  >((state: any) => state?.quote);
+  const { loading: fetchLoading } = useSelector<any, SingleQuoteState>(
+    (state: any) => state?.quote
+  );
 
   const params = useParams();
 
@@ -189,6 +188,14 @@ export default function AddEditQuote() {
               })),
             })),
           } as any);
+        },
+        onError: (err: any) => {
+          const errors = err?.errors;
+          if (errors) {
+            showErrorMessage(Object.keys(errors).map((e) => errors[e][0]));
+          } else {
+            showErrorMessage(err?.message || err || "Unknown error occured");
+          }
         },
       } as any;
       dispatch(action);
@@ -453,6 +460,7 @@ export default function AddEditQuote() {
                   variant="light"
                   color="primary"
                   className="bg-primary/20 text-primary"
+                  disabled={!formIsValid}
                 >
                   <Icon icon="mdi:eye-outline" className="text-xl" />
                   Preview
